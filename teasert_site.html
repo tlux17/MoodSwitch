@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MOOD SWITCH</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root{
+            --bg:#05070f;
+            --glass:rgba(255,255,255,.08);
+            --border:rgba(255,255,255,.2);
+            --blue:#4cc9f0;
+            --purple:#9d4edd;
+            --orange:#ff9f43;
+        }
+
+        *{box-sizing:border-box}
+
+        body{
+            margin:0;
+            font-family:Inter,sans-serif;
+            color:#e5e7eb;
+            background:
+                    radial-gradient(circle at 20% 20%,rgba(76,201,240,.15),transparent 40%),
+                    radial-gradient(circle at 80% 80%,rgba(157,78,221,.15),transparent 40%),
+                    var(--bg);
+        }
+
+        /* ===== HERO ===== */
+        .hero{
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            position:relative;
+            overflow:hidden;
+        }
+
+        .hero::after{
+            content:"";
+            position:absolute;
+            inset:0;
+            background:url("images/p.jpg") center / 940px no-repeat;
+            opacity:.35;
+            pointer-events:none;
+            transform-origin: center; /* pivot au centre */
+            animation: rotate-bg 20s linear infinite; /* rotation continue sur 60s */
+        }
+
+        @keyframes rotate-bg {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hero-tagline{
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            margin-top: 10px;
+            color: #006666; /* cyan sombre */
+            text-shadow:
+                    0 0 2px #009999,
+                    0 0 4px #006666;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: #009999; /* couleur solide sombre */
+            z-index: 1;
+        }
+
+
+
+        .hero h1{
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 4rem;
+            letter-spacing: 8px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+            text-transform: uppercase;
+
+            /* Couleur principale sombre/cyan */
+            color: #0ff; /* cyan clair sur fond sombre */
+
+            /* Ombres pour effet néon froid */
+            text-shadow:
+                    0 0 5px #0ff,
+                    0 0 10px #0ff,
+                    0 0 20px #00a3a3,
+                    0 0 30px #007777,
+                    0 0 40px #004f4f;
+
+            /* Dégradé sombre/froid */
+            background: linear-gradient(90deg, #0ff, #00a3a3, #004f4f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            /* Animation glitch futuriste */
+            animation: neon-glitch 2s infinite alternate;
+        }
+
+        @keyframes neon-glitch {
+            0% { text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #00a3a3; transform: translateX(0) skewX(0deg);}
+            25% { text-shadow: 0 0 10px #004f4f, 0 0 20px #00a3a3, 0 0 30px #0ff; transform: translateX(-2px) skewX(-2deg);}
+            50% { text-shadow: 0 0 15px #0ff, 0 0 25px #004f4f, 0 0 35px #00a3a3; transform: translateX(2px) skewX(2deg);}
+            75% { text-shadow: 0 0 10px #00a3a3, 0 0 20px #0ff, 0 0 30px #004f4f; transform: translateX(-1px) skewX(1deg);}
+            100% { text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #00a3a3; transform: translateX(0) skewX(0deg);}
+        }
+
+        .scroll-indicator{
+            position:absolute;
+            bottom:40px;
+            font-size:.9rem;
+            opacity:.6;
+            letter-spacing:2px;
+            z-index:1;
+        }
+
+        /* ===== CAROUSEL ===== */
+        .carousel{
+            width:100%;
+            max-width:1400px;
+            margin:0 auto;
+            position:relative;
+            padding:120px 60px;
+        }
+
+        .title{
+            text-align:center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 2.2rem;
+            letter-spacing: 4px;
+            margin-bottom: 60px;
+
+            /* Couleur plus sombre */
+            color: #009999; /* cyan sombre / bleu pétrole */
+
+            /* Ombres néon sombres */
+            text-shadow:
+                    0 0 3px #009999,
+                    0 0 6px #006666,
+                    0 0 12px #004f4f,
+                    0 0 18px #003333;
+
+            /* Dégradé sombre/froid */
+            background: linear-gradient(90deg, #009999, #006666, #004f4f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            /* Animation glitch légère */
+            animation: neon-glitch 2s infinite alternate;
+        }
+
+
+        .viewport{width:100%}
+
+        .track{
+            display:flex;
+            gap:40px;
+            transition:transform .7s cubic-bezier(.22,1,.36,1);
+        }
+
+        .card{
+            flex:0 0 300px;
+            background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.02));
+            border:1px solid var(--border);
+            border-radius:26px;
+            backdrop-filter:blur(16px);
+            overflow:hidden;
+            position:relative;
+            transition:.5s;
+        }
+
+        .card::after{
+            content:"";
+            position:absolute;
+            inset:0;
+            background:linear-gradient(120deg,transparent 30%,rgba(76,201,240,.35),transparent 70%);
+            opacity:0;
+            transition:.5s;
+        }
+
+        .card:hover::after{opacity:1}
+
+        .card:hover{
+            transform:translateY(-18px) scale(1.06);
+            box-shadow:
+                    0 0 35px rgba(76,201,240,.5),
+                    0 0 70px rgba(157,78,221,.3);
+        }
+
+        .card img{
+            width:100%;
+            height:250px;
+            object-fit:cover;
+        }
+
+        .content{
+            padding:20px;
+            text-align:center;
+            position:relative;
+            z-index:1;
+        }
+
+        .content h3{
+            font-family:Orbitron,sans-serif;
+            font-size:1.05rem;
+            color:var(--blue);
+            letter-spacing:1px;
+            text-transform:uppercase;
+        }
+
+        .content p{
+            font-size:.95rem;
+            opacity:.9;
+            line-height:1.5;
+        }
+
+        .btn{
+            display:inline-block;
+            margin-top:16px;
+            padding:12px 30px;
+            border-radius:999px;
+            background:linear-gradient(135deg,var(--orange),#ffd166);
+            color:#05070f;
+            font-weight:700;
+            text-decoration:none;
+            transition:.3s;
+        }
+
+        .btn:hover{
+            box-shadow:0 0 25px rgba(255,159,67,.7);
+            transform:translateY(-3px);
+        }
+
+        .nav{
+            position:absolute;
+            top:55%;
+            transform:translateY(-50%);
+            width:60px;
+            height:60px;
+            border-radius:50%;
+            cursor:pointer;
+            background:rgba(255,255,255,.1);
+            border:1px solid var(--border);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:1.8rem;
+            backdrop-filter:blur(10px);
+            transition:.4s;
+            z-index:10;
+        }
+
+        .nav:hover{
+            background:rgba(76,201,240,.3);
+            box-shadow:0 0 30px rgba(76,201,240,.8);
+        }
+
+        .prev{left:10px}
+        .next{right:10px}
+
+        @media(max-width:900px){
+            .carousel{padding:100px 20px}
+            .card{flex:0 0 260px}
+            .hero h1{font-size:2.2rem}
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- HERO -->
+<section class="hero">
+    <h1>MOOD SWITCH</h1>
+    <p class="hero-tagline">Choose your identity</p>
+    <div class="scroll-indicator">SCROLL</div>
+</section>
+
+<!-- CAROUSEL -->
+<section class="carousel">
+    <div class="title">PERSONALITIES</div>
+
+    <div class="nav prev">‹</div>
+    <div class="nav next">›</div>
+
+    <div class="viewport">
+        <div class="track" id="track">
+
+            <div class="card"><img src="images/abd.jpg"><div class="content"><h3>THE CONFIDENT ONE</h3><p>Speaks without hesitation. Never doubts. Never apologizes.</p><a class="btn">Buy</a></div></div>
+            <div class="card"><img src="images/talina-photo.jpg"><div class="content"><h3>THE STRATEGIST</h3><p>Thinks three steps ahead. Optimizes every decision.</p><a class="btn">Buy</a></div></div>
+            <div class="card"><img src="images/farah.jpg"><div class="content"><h3>THE SWEET TALKER</h3><p>Charms naturally. Connects deeply. Never pretends.</p><a class="btn">Buy</a></div></div>
+            <div class="card"><img src="images/rayane.jpg"><div class="content"><h3>THE DEALMAKER</h3><p>Turns conversations into opportunities. Always closes.</p><a class="btn">Buy</a></div></div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+    const track=document.getElementById('track');
+    const cards=[...track.children];
+    const prev=document.querySelector('.prev');
+    const next=document.querySelector('.next');
+    let index=0;
+
+    function getStep(){
+        const card=cards[0];
+        const gap=parseInt(getComputedStyle(track).gap);
+        return card.offsetWidth+gap;
+    }
+
+    function update(){
+        const visible=Math.floor(document.querySelector('.viewport').offsetWidth/getStep());
+        const maxIndex=cards.length-visible;
+        index=Math.max(0,Math.min(index,maxIndex));
+        track.style.transform=`translateX(${-index*getStep()}px)`;
+    }
+
+    next.onclick=()=>{index++;update()}
+    prev.onclick=()=>{index--;update()}
+    window.addEventListener('resize',update);
+    update();
+</script>
+
+</body>
+</html>
